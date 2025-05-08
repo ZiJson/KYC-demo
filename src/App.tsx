@@ -1,38 +1,33 @@
+import Input from "@/components/Input";
+import Select from "./components/Select";
 import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
-import Button from "./components/Button";
 
 function App() {
-  const [count, setCount] = useState(0);
+  const [value, setValue] = useState<string>("");
 
+  const handleChange = (value: string) => {
+    setValue(value);
+    console.log(value);
+  };
   return (
-    <div className="p-20">
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <Button
-          variant="primary"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          count is {count}
-        </Button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+    <div className="flex flex-col items-center justify-center gap-5 p-40">
+      <Input type="phone" placeholder="Name" />
+      <Select value={value} onChange={handleChange} options={mockOptions} />
     </div>
   );
 }
 
 export default App;
+
+const mockOptions = [
+  { value: "option1", label: "Option 1" },
+  { value: "option2", label: "Option 2" },
+  { value: "option3", label: "Option 3" },
+  { value: "option4", label: "Option 4" },
+  { value: "option5", label: "Option 5" },
+  { value: "option6", label: "Option 6" },
+  { value: "option7", label: "Option 7" },
+  { value: "option8", label: "Option 8" },
+  { value: "option9", label: "Option 9" },
+  { value: "option10", label: "Option 10" },
+];
