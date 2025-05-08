@@ -1,16 +1,8 @@
+import type { fileSchema } from "@/schemas";
+import type { z } from "zod";
 import { create } from "zustand";
 
-type FileState = {
-  idCardFront: File | null;
-  idCardBack: File | null;
-  extraDocs: File[];
-  actions: {
-    setFront: (file: File) => void;
-    setBack: (file: File) => void;
-    addExtraDoc: (file: File) => void;
-    removeExtraDoc: (index: number) => void;
-  };
-};
+type FileState = z.infer<typeof fileSchema>;
 type FileActions = {
   setFront: (file: File) => void;
   setBack: (file: File) => void;

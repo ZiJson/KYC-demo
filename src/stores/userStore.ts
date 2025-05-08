@@ -1,22 +1,16 @@
+import type { userSchema } from "@/schemas";
+import type { z } from "zod";
 import { create } from "zustand";
 
-type UserState = {
-  name: string;
-  email: string;
-  phone: string;
-  nationality: string;
-  gender: string;
-  address: string;
-  birthdate: string;
-};
+type UserState = z.infer<typeof userSchema>;
 type UserActions = {
   setName: (name: string) => void;
   setEmail: (email: string) => void;
   setPhone: (phone: string) => void;
   setNationality: (nationality: string) => void;
-  setGender: (gender: string) => void;
+  setGender: (gender: UserState["gender"]) => void;
   setAddress: (address: string) => void;
-  setBirthdate: (birthdate: string) => void;
+  setBirthdate: (birthdate: Date) => void;
 };
 type UserStore = UserState & { actions: UserActions };
 
@@ -25,9 +19,9 @@ const userStore = create<UserStore>((set) => ({
   email: "",
   phone: "",
   nationality: "",
-  gender: "",
+  gender: null,
   address: "",
-  birthdate: "",
+  birthdate: new Date(),
 
   actions: {
     setName: (name) => set({ name }),
