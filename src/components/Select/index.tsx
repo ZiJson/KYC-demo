@@ -1,6 +1,7 @@
 import { cn } from "@/lib/utils";
 import { Check, ChevronDown, X } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useId, useRef, useState } from "react";
+import Button from "../Button";
 
 type Option = { value: string; label: string };
 
@@ -19,6 +20,7 @@ const Select = ({
   options = [],
   placeholder = "Select ...",
 }: SelectProps) => {
+  const id = useId();
   const [isExpanded, setIsExpanded] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [highlightIndex, setHighlightIndex] = useState(0);
@@ -88,19 +90,26 @@ const Select = ({
   const selectedLabel = options.find((i) => i.value === value)?.label || "";
 
   return (
-    <div className={cn("relative w-50", className)}>
-      <div className="absolute top-1/2 right-2 flex -translate-y-1/2 gap-1">
-        <X
-          size={16}
+    <div className={cn("relative", className)}>
+      <label
+        htmlFor={id}
+        className="absolute top-1/2 right-2 flex -translate-y-1/2 items-center gap-1"
+      >
+        <Button
+          variant="icon"
           onClick={handleClear}
-          className={cn(
-            "text-muted-foreground hover:text-primary cursor-pointer transition-all duration-200",
-            value || searchTerm ? "" : "hidden",
-          )}
+          onMouseDown={(e) => e.preventDefault()}
+          className={cn("h-auto p-1", value || searchTerm ? "" : "hidden")}
+        >
+          <X />
+        </Button>
+        <ChevronDown
+          size={16}
+          className="text-muted-foreground cursor-pointer"
         />
-        <ChevronDown size={16} className="text-muted-foreground" />
-      </div>
+      </label>
       <input
+        id={id}
         type="text"
         className={cn(
           "text-muted-foreground w-full cursor-pointer rounded-md border px-2 py-1.5 text-sm focus:ring-2 focus:outline-none",

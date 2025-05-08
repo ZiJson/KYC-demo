@@ -1,7 +1,7 @@
 import { cn } from "../../lib/utils";
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: "primary" | "secondary";
+  variant?: "primary" | "secondary" | "icon" | "goast";
 }
 
 const defaultClassName =
@@ -10,6 +10,8 @@ const variants = {
   primary: "bg-primary text-primary-foreground shadow hover:bg-primary/90",
   secondary:
     "bg-secondary text-secondary-foreground shadow-sm hover:bg-secondary/80",
+  icon: "bg-transparent text-muted-foreground hover:bg-muted aspect-square h-7 p-1 focus:ring-0",
+  goast: "bg-transparent hover:bg-muted",
 };
 
 const Button = ({

@@ -1,6 +1,7 @@
 import { cn } from "@/lib/utils";
 import { X } from "lucide-react";
 import React, { useRef, useImperativeHandle } from "react";
+import Button from "@/components/Button";
 
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   type?: "text" | "email" | "phone";
@@ -36,11 +37,13 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
             onChange={onChange}
             {...props}
           />
-          <X
-            size={17}
+          <Button
+            variant="icon"
             onClick={handleClear}
-            className="text-muted-foreground absolute top-1/2 right-2 -translate-y-1/2 cursor-pointer"
-          />
+            className="absolute top-1/2 right-2 h-auto -translate-y-1/2 p-1"
+          >
+            <X />
+          </Button>
         </div>
         {errorMessage && (
           <p className="text-destructive mt-1 pl-1 text-xs">{errorMessage}</p>
