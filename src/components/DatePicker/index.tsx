@@ -36,7 +36,7 @@ const DatePicker = ({
     <div className="relative">
       <label
         htmlFor={id}
-        className="absolute top-1/2 right-2 flex -translate-y-1/2 items-center gap-1"
+        className="absolute top-1/2 right-2 flex -translate-y-1/2 cursor-pointer items-center gap-1"
       >
         <Button
           variant="icon"
@@ -46,10 +46,7 @@ const DatePicker = ({
         >
           <X />
         </Button>
-        <CalendarCheck
-          size={16}
-          className="text-muted-foreground cursor-pointer"
-        />
+        <CalendarCheck size={16} className="text-muted-foreground" />
       </label>
       <input
         id={id}

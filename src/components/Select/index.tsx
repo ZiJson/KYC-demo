@@ -93,7 +93,7 @@ const Select = ({
     <div className={cn("relative", className)}>
       <label
         htmlFor={id}
-        className="absolute top-1/2 right-2 flex -translate-y-1/2 items-center gap-1"
+        className="absolute top-1/2 right-2 flex -translate-y-1/2 cursor-pointer items-center gap-1"
       >
         <Button
           variant="icon"
@@ -103,10 +103,7 @@ const Select = ({
         >
           <X />
         </Button>
-        <ChevronDown
-          size={16}
-          className="text-muted-foreground cursor-pointer"
-        />
+        <ChevronDown size={16} className="text-muted-foreground" />
       </label>
       <input
         id={id}
@@ -127,7 +124,7 @@ const Select = ({
       {
         <div
           className={cn(
-            "absolute inset-x-0 top-[calc(100%_+_10px)] z-10 max-h-50 origin-top scale-100 overflow-y-auto rounded-md border bg-white p-1 text-sm opacity-100 shadow-md transition-all duration-200",
+            "absolute inset-x-0 top-[calc(100%_+_10px)] z-10 max-h-50 origin-top scale-100 overflow-y-auto rounded-md border bg-white p-1 text-sm opacity-100 shadow-lg transition-all duration-200",
             !isExpanded && "scale-0 opacity-0",
           )}
           ref={optionsRef}

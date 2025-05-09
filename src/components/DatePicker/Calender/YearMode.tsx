@@ -17,7 +17,7 @@ const YearMode = ({ currentYear, seletedYear, onChange }: YearModeProps) => {
           y <= thisYear && (
             <div
               key={y}
-              className={`cursor-pointer rounded p-2 text-center ${
+              className={`cursor-pointer rounded p-2 text-center font-semibold ${
                 seletedYear === y
                   ? "bg-primary text-primary-foreground"
                   : "hover:bg-muted"

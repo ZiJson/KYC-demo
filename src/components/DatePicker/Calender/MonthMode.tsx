@@ -9,7 +9,7 @@ const MonthMode = ({ currentMonth, onChange }: MonthModeProps) => {
       {monthNames.map((m, index) => (
         <div
           key={m}
-          className={`cursor-pointer rounded p-2 text-center ${
+          className={`cursor-pointer rounded p-2 text-center font-semibold ${
             currentMonth === index
               ? "bg-primary text-primary-foreground"
               : "hover:bg-muted"

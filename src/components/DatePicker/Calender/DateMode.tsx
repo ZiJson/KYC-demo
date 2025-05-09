@@ -1,7 +1,6 @@
 import { getDaysInMonth, getStartDayOfMonth, isSameDay } from "@/lib/utils";
 
-interface DateModeProps extends DateGridProps {}
-const DateMode = (props: DateModeProps) => {
+const DateMode = (props: DateGridProps) => {
   return (
     <>
       <DaysRow />
@@ -46,7 +45,7 @@ const DateGrid = ({ currentDate, selectedDate, onChange }: DateGridProps) => {
     cells.push(
       <div
         key={d}
-        className={`cursor-pointer rounded p-2 text-center ${
+        className={`cursor-pointer rounded p-2 text-center font-semibold ${
           selected ? "bg-primary text-primary-foreground" : "hover:bg-muted"
         }`}
         onClick={() => onChange(thisDate.getTime())}

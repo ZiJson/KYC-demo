@@ -2,10 +2,12 @@ import Input from "@/components/Input";
 import Select from "@/components/Select";
 import DatePicker from "@/components/DatePicker";
 import { useState } from "react";
+import FileUpload from "./components/FileUpload";
 
 function App() {
   const [value, setValue] = useState<string>("");
   const [date, setDate] = useState<number>(0);
+  const [files, setFiles] = useState<File[]>([]);
 
   const handleChange = (value: string) => {
     setValue(value);
@@ -15,13 +17,8 @@ function App() {
     <div className="flex flex-col items-center justify-center gap-5 p-40">
       <Input type="phone" placeholder="Name" />
       <Select value={value} onChange={handleChange} options={mockOptions} />
-      <DatePicker
-        onChange={(date) => {
-          console.log(123);
-          setDate(date);
-        }}
-        value={date}
-      />
+      <DatePicker onChange={setDate} value={date} />
+      <FileUpload onChange={setFiles} value={files} />
     </div>
   );
 }
