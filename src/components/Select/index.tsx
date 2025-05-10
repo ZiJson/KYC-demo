@@ -1,16 +1,15 @@
 import { cn } from "@/lib/utils";
 import { Check, ChevronDown, X } from "lucide-react";
-import { useEffect, useId, useRef, useState } from "react";
+import { memo, useEffect, useRef, useState } from "react";
 import Button from "../Button";
+import { useStableId } from "@/hooks";
+import type { ControlledFieldProps } from "@/type";
 
 type Option = { value: string; label: string };
 
-interface SelectProps {
-  onChange: (value: string) => void;
-  value: string;
+interface SelectProps<T = string> extends ControlledFieldProps<T> {
   options?: Option[];
   className?: string;
-  placeholder?: string;
 }
 
 const Select = ({
@@ -19,14 +18,18 @@ const Select = ({
   className,
   options = [],
   placeholder = "Select ...",
+  required,
+  onBlur,
+  label,
+  errorMessage,
+  id: idProp,
 }: SelectProps) => {
-  const id = useId();
+  const id = useStableId(idProp);
   const [isExpanded, setIsExpanded] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [highlightIndex, setHighlightIndex] = useState(0);
 
   const optionsRef = useRef<HTMLDivElement>(null);
-
   useEffect(() => {
     // Scroll to the highlighted option automatically
     if (isExpanded) {
@@ -49,6 +52,7 @@ const Select = ({
   const handleBlur = () => {
     setIsExpanded(false);
     setSearchTerm("");
+    onBlur?.();
   };
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -79,83 +83,90 @@ const Select = ({
       (e.target as HTMLInputElement).blur();
     }
   };
-
   const handleClear = () => {
-    if (value) {
-      onChange("");
-      setSearchTerm("");
-    }
+    onChange(null);
   };
 
   const selectedLabel = options.find((i) => i.value === value)?.label || "";
 
   return (
-    <div className={cn("relative", className)}>
-      <label
-        htmlFor={id}
-        className="absolute top-1/2 right-2 flex -translate-y-1/2 cursor-pointer items-center gap-1"
-      >
-        <Button
-          variant="icon"
-          onClick={handleClear}
-          onMouseDown={(e) => e.preventDefault()}
-          className={cn("h-auto p-1", value || searchTerm ? "" : "hidden")}
+    <div className={cn("relative w-full max-w-3xs", className)}>
+      {label && (
+        <label
+          htmlFor={id}
+          className="relative mb-1 block px-1 text-sm font-bold"
         >
-          <X />
-        </Button>
-        <ChevronDown size={16} className="text-muted-foreground" />
-      </label>
-      <input
-        id={id}
-        type="text"
-        className={cn(
-          "text-muted-foreground w-full cursor-pointer rounded-md border px-2 py-1.5 text-sm focus:ring-2 focus:outline-none",
-          (searchTerm || value) &&
-            "text-foreground placeholder:text-foreground",
-        )}
-        placeholder={selectedLabel || placeholder}
-        onChange={handleSearch}
-        value={searchTerm}
-        onBlur={handleBlur}
-        onFocus={handleFocus}
-        onKeyDown={handleKeyDown}
-      />
-
-      {
-        <div
+          {label}
+          {required && <span className="text-destructive ml-1">*</span>}
+        </label>
+      )}
+      <div className="relative w-full">
+        <input
+          id={id}
+          type="text"
           className={cn(
-            "absolute inset-x-0 top-[calc(100%_+_10px)] z-10 max-h-50 origin-top scale-100 overflow-y-auto rounded-md border bg-white p-1 text-sm opacity-100 shadow-lg transition-all duration-200",
-            !isExpanded && "scale-0 opacity-0",
+            "text-muted-foreground w-full cursor-pointer rounded-md border px-2 py-1.5 text-sm focus:ring-2 focus:outline-none",
+            (searchTerm || value) &&
+              "text-foreground placeholder:text-foreground",
+            errorMessage && !isExpanded && "border-destructive focus:ring-0",
           )}
-          ref={optionsRef}
+          placeholder={selectedLabel || placeholder}
+          onChange={handleSearch}
+          value={searchTerm}
+          onBlur={handleBlur}
+          onFocus={handleFocus}
+          onKeyDown={handleKeyDown}
+        />
+        <label
+          htmlFor={id}
+          className="absolute top-1/2 right-2 flex -translate-y-1/2 items-center gap-1"
         >
-          {filteredOptions.length > 0 ? (
-            filteredOptions.map((item, idx) => (
-              <div
-                key={item.value}
-                className={cn(
-                  "relative cursor-pointer rounded-sm px-3 py-1",
-                  item.value === value && "bg-muted/30",
-                  idx === highlightIndex ? "bg-muted" : "hover:bg-muted",
-                )}
-                onMouseDown={() => handleSelect(item.value)}
-              >
-                {item.label}
-                {value === item.value && (
-                  <Check
-                    size={16}
-                    className="text-muted-foreground absolute top-1/2 right-2 -translate-y-1/2"
-                  />
-                )}
-              </div>
-            ))
-          ) : (
-            <p className="text-muted-foreground px-3 py-1">No results</p>
+          {value && (
+            <Button variant="icon" onClick={handleClear} className="h-auto p-1">
+              <X />
+            </Button>
           )}
-        </div>
-      }
+          <ChevronDown size={16} className="text-muted-foreground" />
+        </label>
+      </div>
+      <div
+        className={cn(
+          "absolute inset-x-0 top-[calc(100%_+_10px)] z-10 max-h-50 origin-top scale-100 overflow-y-auto rounded-md border bg-white p-1 text-sm opacity-100 shadow-lg transition-all duration-200",
+          !isExpanded && "scale-0 opacity-0",
+        )}
+        ref={optionsRef}
+      >
+        {filteredOptions.length > 0 ? (
+          filteredOptions.map((item, idx) => (
+            <div
+              key={item.value}
+              className={cn(
+                "relative cursor-pointer rounded-sm px-3 py-1",
+                item.value === value && "bg-muted/30",
+                idx === highlightIndex ? "bg-muted" : "hover:bg-muted",
+              )}
+              onMouseDown={() => handleSelect(item.value)}
+            >
+              {item.label}
+              {value === item.value && (
+                <Check
+                  size={16}
+                  className="text-muted-foreground absolute top-1/2 right-2 -translate-y-1/2"
+                />
+              )}
+            </div>
+          ))
+        ) : (
+          <p className="text-muted-foreground px-3 py-1">No results</p>
+        )}
+      </div>
+      {errorMessage && !isExpanded && (
+        <p className="text-destructive absolute top-0 right-1 mt-1 text-xs">
+          {errorMessage}
+        </p>
+      )}
     </div>
   );
 };
 
-export default Select;
+export default memo(Select);

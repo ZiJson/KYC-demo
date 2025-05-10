@@ -41,7 +41,6 @@ const DateGrid = ({ currentDate, selectedDate, onChange }: DateGridProps) => {
   for (let d = 1; d <= daysInMonth; d++) {
     const thisDate = new Date(year, month, d);
     const selected = isSameDay(thisDate, selectedDate);
-    if (selected) console.log(thisDate);
     cells.push(
       <div
         key={d}

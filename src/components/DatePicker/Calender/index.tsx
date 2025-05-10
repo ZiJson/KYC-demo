@@ -95,7 +95,7 @@ export const Calendar: React.FC<CalendarProps> = ({ date, onChange }) => {
   };
 
   return (
-    <div className="w-70 rounded-lg border bg-white p-4 text-sm shadow-lg">
+    <div className="w-70 rounded-lg border bg-white p-4 text-sm shadow-xl">
       <div className="mb-2 flex items-center justify-between">
         <Button variant="icon" onClick={handlePrev}>
           <ArrowLeft />

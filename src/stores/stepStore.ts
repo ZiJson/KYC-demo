@@ -2,21 +2,38 @@ import { create } from "zustand";
 
 type StepState = {
   currentStep: number;
+  totalSteps: number;
+  beforeNext?: (() => Promise<void>) | null;
 };
 
 type StepActions = {
-  setCurrentStep: (step: number) => void;
+  onNext: () => void;
+  onPrev: () => void;
+  setTotalSteps: (totalSteps: number) => void;
+  setBeforeNext: (beforeNext: (() => Promise<void>) | null) => void;
 };
 
 type StepStore = StepState & { actions: StepActions };
 
-const stepStore = create<StepStore>((set) => ({
+export const useStepStore = create<StepStore>((set) => ({
   currentStep: 0,
+  totalSteps: 0,
+  beforeNext: null,
 
   actions: {
-    setCurrentStep: (step) => set({ currentStep: step }),
+    onNext: () =>
+      set((state) => {
+        return {
+          currentStep: Math.min(state.currentStep + 1, state.totalSteps - 1),
+        };
+      }),
+    onPrev: () =>
+      set((state) => ({ currentStep: Math.max(state.currentStep - 1, 0) })),
+    setTotalSteps: (totalSteps) => set({ totalSteps }),
+    setBeforeNext: (beforeNext) => set({ beforeNext }),
   },
 }));
 
-export const useCurrentStep = stepStore((state) => state.currentStep);
-export const useStepActions = stepStore((state) => state.actions);
+export const useCurrentStep = () => useStepStore((state) => state.currentStep);
+export const useBeforeNext = () => useStepStore((state) => state.beforeNext);
+export const useStepActions = () => useStepStore((state) => state.actions);

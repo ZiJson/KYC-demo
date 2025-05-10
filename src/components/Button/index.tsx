@@ -22,8 +22,9 @@ const Button = ({
 }: ButtonProps) => {
   return (
     <button
-      {...props}
+      type="button"
       className={cn(defaultClassName, variants[variant], className)}
+      {...props}
     >
       {children}
     </button>

@@ -1,19 +1,26 @@
 import { z } from "zod";
 
-export enum Gender {
-  Male = "Male",
-  Female = "Female",
-  PreferNotToSay = "Prefer not to say",
-}
+export const GENDER = ["Male", "Female", "Prefer not to say"] as const;
 
 export const userSchema = z.object({
-  name: z.string(),
-  email: z.string().email(),
+  name: z.string().nonempty("Required"),
+  email: z.string().email().nonempty("Required"),
   phone: z
     .string()
-    .regex(/^\+?[1-9]\d{1,14}$/, "Invalid phone number (E.164 format)"), // E.164 format
-  nationality: z.string(),
-  gender: z.nativeEnum(Gender).nullable(),
+    .nonempty("Required")
+    .regex(/^\+?[1-9]\d{1,14}$/, "Invalid phone number"), // E.164 format
+  nationality: z
+    .string({
+      required_error: "Required",
+      invalid_type_error: "Required",
+    })
+    .nonempty("Required"),
+  gender: z.enum(GENDER).nullable(),
   address: z.string(),
-  birthdate: z.date(),
+  birthdate: z
+    .number({
+      required_error: "Required",
+      invalid_type_error: "Required",
+    })
+    .min(1, "Required"),
 });
