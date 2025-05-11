@@ -7,7 +7,7 @@ import type { ControlledFieldProps } from "@/type";
 import { useStableId } from "@/hooks";
 
 interface DatePickerProps extends ControlledFieldProps<number> {
-  position?: "right" | "bottom";
+  position?: "right" | "bottom" | "top";
 }
 
 const DatePicker = ({
@@ -83,6 +83,8 @@ const DatePicker = ({
           position === "bottom" && "top-[calc(100%_+_10px)] origin-top",
           position === "right" &&
             "bottom-0 left-[calc(100%_+_10px)] origin-bottom-left",
+          position === "top" &&
+            "right-0 bottom-[calc(100%_+_10px)] origin-bottom-right",
         )}
         onMouseDown={(e) => e.preventDefault()}
       >

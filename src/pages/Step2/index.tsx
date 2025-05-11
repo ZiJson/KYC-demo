@@ -18,7 +18,7 @@ const Step2 = () => {
     defaultValues: stateValue,
   });
   return (
-    <div className="size-full">
+    <div className="size-full overflow-auto py-1">
       <form className="flex flex-col items-center justify-center gap-5">
         <Controller
           name="idCardFront"
@@ -32,7 +32,9 @@ const Step2 = () => {
                 label="ID Card Front"
                 required
                 errorMessage={error?.message}
-                onChange={(value) => onChange(value && value[0])}
+                onChange={(value) => {
+                  onChange(value && value?.length > 0 ? value[0] : value);
+                }}
                 value={value && [value]}
                 {...rest}
               />
@@ -51,8 +53,10 @@ const Step2 = () => {
                 label="ID Card Back"
                 required
                 errorMessage={error?.message}
-                onChange={(value) => onChange(value && value[0])}
-                value={value && [value]}
+                onChange={(value) => {
+                  onChange(value && value?.length > 0 ? value[0] : value);
+                }}
+                value={value ? [value] : []}
                 {...rest}
               />
             );

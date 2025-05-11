@@ -23,7 +23,6 @@ const FileUpload = ({
 }: FileUploadProps) => {
   const id = useStableId(idProp);
   const inputRef = useRef<HTMLInputElement>(null);
-
   const handleRemove = (indexToRemove: number) => {
     if (!value) return;
     const newFiles = value.filter((_, index) => index !== indexToRemove);

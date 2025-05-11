@@ -123,7 +123,7 @@ const Step1 = () => {
               <DatePicker
                 label="Birthdate"
                 required
-                position="right"
+                position="top"
                 errorMessage={error?.message}
                 {...field}
               />
